@@ -6,6 +6,22 @@ const Filter = ({ value, onChange }) =>
     find countries <input value={value} onChange={event => onChange(event.target.value)}/>
   </div>
 
+const CountryEntry = ({ country }) => {
+  const [ showInfo, setShowInfo ] = useState(false)
+
+  return (
+    <div>
+      <p>
+        {country.name.official}
+        <button onClick={() => setShowInfo(!showInfo)}>{showInfo ? 'hide' : 'show'}</button>
+      </p>
+      {showInfo &&
+        <CountryInfo country={country} />
+      }
+    </div>
+  )
+}
+
 const CountryInfo = ({ country }) => 
   <div>
     <h1>{country.name.official}</h1>
@@ -41,7 +57,7 @@ const App = () => {
       {matchingCountries.length > 10
         ? <p>Too many matches, specify another filter</p>
         : matchingCountries.length > 1
-          ? matchingCountries.map(country => <p key={country.cca2}>{country.name.official}</p>)
+          ? matchingCountries.map(country => <CountryEntry key={country.cca2} country={country} />)
           : matchingCountries.length === 1
             ? <CountryInfo country={matchingCountries[0]} />
             : <p>No matches</p>
