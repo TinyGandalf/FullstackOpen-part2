@@ -1,43 +1,9 @@
-import './App.css'
+import Notification from './components/Notification'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
 import personsService from './services/personsService'
 import { useState, useEffect } from 'react'
-
-const Filter = ({ value, onChange }) => 
-  <div>filter shown filter <input value={value} onChange={event => onChange(event.target.value)} /></div>
-
-const Persons = ({ persons, onDelete }) => 
-  <div>
-    {persons.map(person =>
-      <Person key={person.id} name={person.name} number={person.number} onDelete={() => onDelete(person)} />
-    )}
-  </div>
-
-const Person = ({ name, number, onDelete }) =>
-  <p>
-    {name} {number}
-    <button onClick={onDelete}>delete</button>
-  </p>
-
-const PersonForm = ({ name, onNameChange, number, onNumberChange, onSubmit }) => 
-  <form onSubmit={onSubmit}>
-    <div>name: <input value={name} onChange={event => onNameChange(event.target.value)} /></div>
-    <div>number: <input value={number} onChange={event => onNumberChange(event.target.value)} /></div>
-    <div><button type="submit">add</button></div>
-  </form>
-
-const Notification = ({ message, isError }) => {
-  if (message === null) {
-    return null
-  }
-
-  const errorClass = isError ? 'error' : ''
-
-  return (
-    <div className={`notification ${errorClass}`}>
-      {message}
-    </div>
-  )
-}
 
 const App = () => {
   const [filter, setFilter] = useState('')
@@ -81,10 +47,7 @@ const App = () => {
     setPersons(persons.filter(p => p.id !== person.id))
   }
 
-  const waitToHideMessage = () =>
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
+  const waitToHideMessage = () => setTimeout(() => setMessage(null), 5000)
 
   const addPerson = event => {
     event.preventDefault()
@@ -136,10 +99,10 @@ const App = () => {
     <div>
       <Notification message={message} isError={messageIsError} />
 
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
       <Filter value={filter} onChange={setFilter} />
 
-      <h2>add a new</h2>
+      <h2>Add a new</h2>
       <PersonForm name={newName} onNameChange={setNewName} number={newNumber} onNumberChange={setNewNumber} onSubmit={addPerson} />
 
       <h2>Numbers</h2>
